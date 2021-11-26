@@ -1,0 +1,10 @@
+19373775
+0
+49
+2523
+1236
+average of arr4[4] = 4417
+average of arr4[3] = 254
+average of arr4[2] = 2009
+average of arr4[1] = 209
+average of arr4[1] = 209

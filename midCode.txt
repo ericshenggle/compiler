@@ -1,0 +1,4 @@
+var arrayInt c 4 
+int main 0 
+ret 0 
+endFunc 

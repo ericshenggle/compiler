@@ -1,0 +1,61 @@
+/*
+C级：包含常见的常量定义以及函数形参 
+*/
+const int a0 = 1, aa0 = 1, aa0a = 1, aa0a0 = 1;     // ident
+const int aA0 = 1, aAsT0A = 1, _a_Abf0_A0_ = 1;     		// ident
+const int ab0 = 1 + 1, ab1 = 2 - 1;					// Addexp
+const int ab2 = 1 * 1, ab3 = 2 / 1, ab4 = 3 % 2;	// Mulexp
+const int ab5 = (1 + 2), ab6 = +33 - 30, ab7 = -1 * -2, ab8 = (+3 + (-2)) * -1 * (0 + 1);
+const int ab9 = ab1 + ab2;
+
+int test_nonparam() {
+	return 1 + 1 - 1;
+}
+
+int test_oneparam(int a) {
+	return a - 1;
+} 
+
+int test_twoparam(int a, int b) {
+	return a + b;
+} 
+
+int test_threeparam(int a, int b, int c) {
+	return a * b + a / c;
+} 
+
+void test_param(int a, int b, int c) {
+	printf("ab6 * ab7 + ab6 * ab8 + ab7 * ab8 = %d\n", a * b + a * c + b * c);
+} 
+
+void print_test() {
+	printf("aa0 = %d\n", aa0);
+	printf("1 + 1 - 1 = %d\n", test_nonparam());
+	printf("ab3 = %d, ab3 - 1 = %d\n", ab3, test_oneparam(ab3));
+	printf("ab4 = %d, ab5 = %d, ab4 + ab5 = %d\n", ab4, ab5, test_twoparam(ab4, ab5));
+	printf("ab6 = %d, ab7 = %d, ab8 = %d, ab6 * ab7 + ab6 / ab8 = %d\n", ab6, ab7, ab8, test_threeparam(ab6, ab7, ab8));
+	test_param(ab6, ab7, ab8);
+	printf("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
+	printf(" !()*+,-./0123456789:;<=>?@[]^_`{|}~\n");
+}
+
+void test_nothing1() {
+	
+}
+
+void test_nothing2() {
+	;
+}
+
+int main() {
+	int a, b = 0;
+	const int c = aAsT0A + _a_Abf0_A0_;
+	a = getint();
+	b = test_nonparam() * (-2) % -100 / (1 + test_nonparam()) + 59167;
+	printf("19373775\n");
+	print_test();
+	test_nothing1();
+	test_nothing2();
+	printf("a = %d, b = %d, c = %d", a, b, c);
+	return 0;
+}

@@ -1,0 +1,52 @@
+/*
+B级难度，常见的一维数组定义以及一维数组进行传参 
+*/
+const int arr1[1] = {0}, arr2[1 + 1] = {7 * 7 - 1, 0}, arr3[3] = {0, 1, 2};
+int arr4[5] = {0, 1234 + 2, 0, 0, 0};
+
+void quickSort(int arr[], int start, int end) {
+	int i, j, mid;
+	mid = arr[(start + end) / 2];
+	i = start;
+	j = end;
+	while (i <= j) {
+		while (arr[i] < mid)
+			i = i + 1;
+		while (arr[j] > mid)
+			j = j - 1;
+		if (i <= j) {
+			int tmp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = tmp;
+			i = i + 1;
+			j = j - 1;
+		}
+		if(i > j) break;
+	}
+	if (i < end) {
+		quickSort(arr, i, end);
+	}
+	if (j > start) {
+		quickSort(arr, start, j);
+	}
+	return;
+}
+
+int main() {
+	printf("19373775\n");
+	int arr5[5] = {1, 2, 3, 4, 5};
+	arr5[1] = arr4[1];
+	printf("arr1[0] = %d, arr2[1] = %d, arr3[2] = %d\n", arr1[0], arr2[1], arr3[2]);
+	printf("arr4[1] = %d, arr4[2] = %d, arr5[1] = %d\n", arr4[1], arr4[2], arr5[1]);
+	int arr[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+	quickSort(arr, 0, 9);
+	int n = 0;
+	while(1) {
+		if (n >= 6) break;
+		printf("%d\n", arr[n]);
+		n = n + 1;
+	}
+	int m = 5 * arr[9];
+	printf("m = %d", m);
+	return 0;
+}

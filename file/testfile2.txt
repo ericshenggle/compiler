@@ -1,0 +1,39 @@
+/*
+B级难度，常见的二维数组定义以及二维数组进行传参 
+*/
+const int arr1[1][1] = {{0}}, arr2[1][1 + 1] = {{7 * 7 - 1, 0}}, arr3[3][3] = {{0, 1, 2}, {0, 1, 2}, {0, 1, 2}};
+int arr4[5][5] = {{1234, 2523, 25796, 6379, 24}, {1, 1234 + 2, 345, -534, 0}, {0,2937*3, 1234 + 2, 0, 0}, {0, 0, 36, 1234 + 2, 0}, {0,-2534,25,46723 / 2, 1234 + 2}};
+
+void average_arr1(int arr[][5], int n) {
+	int i = 0, average = 0;
+	while(i < 5) {
+		average = average + arr[n][i];
+		i = i + 1;
+	}
+	printf("average of arr4[%d] = %d\n", n, average / 5);
+	return;
+}
+
+void average_arr2(int arr[]) {
+	int i = 0, average = 0;
+	while(i < 5) {
+		average = average + arr[i];
+		i = i + 1;
+	}
+	printf("average of arr4[1] = %d\n",average / 5);
+	return;
+}
+
+int main() {
+	printf("19373775\n");
+	printf("%d\n", arr1[0][0] + arr2[0][1]);
+	printf("%d\n", arr2[0][0] + arr3[0][1]);
+	printf("%d\n", arr3[0][0] + arr4[0][1]);
+	printf("%d\n", arr3[0][0] + arr4[1][1]);
+	average_arr1(arr4, 4);
+	average_arr1(arr4, 3);
+	average_arr1(arr4, 2);
+	average_arr1(arr4, 1);
+	average_arr2(arr4[1]);
+	return 0;
+} 
