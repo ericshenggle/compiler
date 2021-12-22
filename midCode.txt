@@ -1,4 +1,21 @@
-var arrayInt c 4 
+const arrayInt c 4 
+c[0] = 1 
+c[1] = 2 
+c[2] = 3 
+c[3] = 4 
+void f2 1 
+param arrayInt a 
+endFunc 
+void f1 1 
+param arrayInt a 
+t0 = 0 * 2 
+t1 = t0 * 4 
+push a[t1] arrayInt 0 
+call f2 
+endFunc 
 int main 0 
+var arrayInt b 1 
+push b arrayInt 0 
+call f1 
 ret 0 
 endFunc 

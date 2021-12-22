@@ -31,7 +31,7 @@ typedef struct {
 
 typedef struct {
     int num;
-    FuncParamType params[10];
+    FuncParamType params[20];
 }Func_data;
 
 struct Symbol {

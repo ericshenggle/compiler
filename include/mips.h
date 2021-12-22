@@ -78,20 +78,12 @@ public:
             }
         }
     }
-    void insertSp2(int sReg, int sp) {
-        for (auto p = maps.rbegin(); p != maps.rend(); ++p) {
-            symMap &symMap = *p;
-            if (symMap.sReg == sReg) {
-                symMap.sp = sp;
-                break;
-            }
-        }
-    }
-    void insertsReg(int sReg, int sp) {                 //栈保存至寄存器
+    void insertsReg(int sReg, int sp, int newSp) {                 //栈保存至寄存器
         for (auto p = maps.rbegin(); p != maps.rend(); ++p) {
             symMap &symMap = *p;
             if (symMap.sp == sp) {
                 symMap.sReg = sReg;
+                symMap.sp = newSp;
                 break;
             }
         }

@@ -1,6 +1,43 @@
 .data
 c:.space	16
 .text
+li	$t9, 1
+la	$t8, c
+sw	$t9, 0($t8)
+li	$t9, 2
+la	$t8, c
+sw	$t9, 4($t8)
+li	$t9, 3
+la	$t8, c
+sw	$t9, 8($t8)
+li	$t9, 4
+la	$t8, c
+sw	$t9, 12($t8)
 main:
+addiu	$a0, $sp, -4
+sw	$ra, -8($sp)
+addi	$sp, $sp, -8
+jal	f1
+addi	$sp, $sp, 8
+lw	$ra, -8($sp)
 li	$v0, 10
 syscall
+f2:
+sw	$a0, -4($sp)
+jr	$ra
+f1:
+sw	$a0, -4($sp)
+li	$t9, 2
+mult	$zero, $t9
+mflo	$t0
+li	$t9, 4
+mult	$t0, $t9
+mflo	$t1
+lw	$t8, -4($sp)
+addu	$a0, $t8, $t1
+sw	$ra, -8($sp)
+addi	$sp, $sp, -8
+jal	f2
+addi	$sp, $sp, 8
+lw	$ra, -8($sp)
+jr	$ra

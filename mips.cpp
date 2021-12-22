@@ -145,12 +145,7 @@ void loadReg(const map<int, string>& store) {           //恢复上下文
         sp += 4;
         text_.emplace_back("lw\t$"+ i.second + ", " + std::to_string(i.first) + "($sp)");
         if (i.second[0] == 's') {
-            mySpMap->insertsReg(i.second[1] - '0', i.first);
-        }
-    }
-    for(const auto &i : store) {
-        if (i.second[0] == 's') {
-            mySpMap->insertSp2(i.second[1] - '0', mapSp.back() - 4);
+            mySpMap->insertsReg(i.second[1] - '0', i.first, mapSp.back() - 4);
         }
     }
 }

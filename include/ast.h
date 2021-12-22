@@ -14,6 +14,7 @@
 #include "SymbolType.h"
 
 #define OUTPUT_MidCode
+extern bool OPTIMIZE;
 
 using std::vector;
 using std::string;
@@ -70,7 +71,6 @@ class decl_class;
 class funcDef;
 class compUnit;
 class FuncParam;
-class funcDef;
 class blockItem;
 class IfStmt;
 class BlockStmt;
@@ -286,7 +286,7 @@ public:
     explicit BlockStmt(vector<blockItem*> blockItems):
             blockItems(std::move(blockItems)){};
     ~BlockStmt();
-    void mid_code(bool isCommon);
+    void mid_code(bool isFuncBlock);
 
     vector<blockItem*> blockItems;
 };
@@ -331,7 +331,7 @@ public:
             stmtType(EMPTY), expr(nullptr), blockStmt(nullptr), ifStmt(nullptr),
             whileStmt(nullptr), returnStmt(nullptr), printStmt(nullptr){};
     ~stmt_class();
-    void mid_code(bool isCommon) const;
+    void mid_code(bool isFuncBlock) const;
 
     StmtType stmtType;
     Expr* expr;

@@ -13,8 +13,15 @@ int if_statement = 0;
 int print = 0;
 int reg = 0;
 int label = 0;
+bool OPTIMIZE = true;
 ofstream midCodefile;/* NOLINT */
 vector<int> loop;
+
+int toInt(const string& i) {             //字符串转int
+    char *end = nullptr;
+    int intStr = strtol(i.c_str(), &end, 10);
+    return intStr;
+}
 
 void midCodeFile() {
     midCodefile.open("midCode.txt", std::ios::trunc);
@@ -196,23 +203,35 @@ Symbol * SubDecl::init(bool is_const, bool global) const {
         if (pid->type == const_t) {
             if (initVal != nullptr && initVal->is_expr) {
                 pid->value = initVal->expr->returnValue();
+            } else {
+                pid->value = 0;
             }
         } else if (pid->type == const_array_t){
             Array_data *p = ((Array_data*) (pid->data));
             if (pid->dimension == 1) {
                 p->length[0] = dim->exprs[0]->returnValue();
+                for (int i = 0; i < p->length[0]; ++i) {
+                    p->var.emplace_back(0);
+                }
+                int i = 0;
                 if (initVal != nullptr) {
-                    for (const auto &i: initVal->initVals) {
-                        p->var.emplace_back(i->expr->returnValue());
+                    for (const auto &j: initVal->initVals) {
+                        p->var[i] = j->expr->returnValue();
+                        i++;
                     }
                 }
             } else {
                 p->length[0] = dim->exprs[0]->returnValue();
                 p->length[1] = dim->exprs[1]->returnValue();
+                for (int i = 0; i < p->length[0]*p->length[1]; ++i) {
+                    p->var.emplace_back(0);
+                }
+                int k = 0;
                 if (initVal != nullptr) {
                     for (const auto &i: initVal->initVals) {
                         for (const auto &j: i->initVals) {
-                            p->var.emplace_back(j->expr->returnValue());
+                            p->var[k] = j->expr->returnValue();
+                            k++;
                         }
                     }
                 }
@@ -227,18 +246,28 @@ Symbol * SubDecl::init(bool is_const, bool global) const {
             Array_data *p = ((Array_data*) (pid->data));
             if (pid->dimension == 1) {
                 p->length[0] = dim->exprs[0]->returnValue();
+                for (int i = 0; i < p->length[0]; ++i) {
+                    p->var.emplace_back(0);
+                }
+                int i = 0;
                 if (initVal != nullptr) {
-                    for (const auto &i: initVal->initVals) {
-                        p->var.emplace_back(i->expr->returnValue());
+                    for (const auto &j: initVal->initVals) {
+                        p->var[i] = j->expr->returnValue();
+                        i++;
                     }
                 }
             } else {
                 p->length[0] = dim->exprs[0]->returnValue();
                 p->length[1] = dim->exprs[1]->returnValue();
+                for (int i = 0; i < p->length[0]*p->length[1]; ++i) {
+                    p->var.emplace_back(0);
+                }
+                int k = 0;
                 if (initVal != nullptr) {
                     for (const auto &i: initVal->initVals) {
                         for (const auto &j: i->initVals) {
-                            p->var.emplace_back(j->expr->returnValue());
+                            p->var[k] = j->expr->returnValue();
+                            k++;
                         }
                     }
                 }
@@ -500,7 +529,7 @@ std::basic_string<char> lVal_class::mid_code(int *pInt) const {
 
 int lVal_class::returnValue() const {
     Symbol* pid = symbolTable_Var->find(ident);
-    if (pid->type == const_t) {
+    if (pid->type == const_t || pid->type == int_t) {
         return pid->value;
     } else if (pid->type == const_array_t){
         Array_data *p = ((Array_data*) (pid->data));
@@ -508,6 +537,15 @@ int lVal_class::returnValue() const {
             return p->var[dim->exprs[0]->returnValue()];
         } else {
             return p->var[dim->exprs[0]->returnValue() * p->length[1] + dim->exprs[1]->returnValue()];
+        }
+    } else if (pid->type == int_array_t) {
+        Array_data *p = ((Array_data*) (pid->data));
+        if (!p->var.empty()) {
+            if (pid->dimension == 1) {
+                return p->var[dim->exprs[0]->returnValue()];
+            } else {
+                return p->var[dim->exprs[0]->returnValue() * p->length[1] + dim->exprs[1]->returnValue()];
+            }
         }
     }
     return 0;
@@ -604,38 +642,59 @@ std::basic_string<char> BinaryExpr::mid_code(int *pInt) const {
     int a = -1, b = -1;
     string i = l->mid_code(&a);
     string j = r->mid_code(&b);
-    *pInt = getTemp();
-    string str = "t" + std::to_string(*pInt);
-    if (a != -1) {
-        temp[a] = 0;
+    if ((i[0] == '-' || isdigit(i[0])) && (j[0] == '-' || isdigit(j[0])) && OPTIMIZE) {
+        int k;
+        switch (binaryOp) {
+            case Add:
+                k = toInt(i) + toInt(j);
+                break;
+            case Sub:
+                k = toInt(i) - toInt(j);
+                break;
+            case Mul:
+                k = toInt(i) * toInt(j);
+                break;
+            case Div:
+                k = toInt(i) / toInt(j);
+                break;
+            case Mod:
+                k = toInt(i) % toInt(j);
+                break;
+        }
+        return std::to_string(k);
+    } else {
+        *pInt = getTemp();
+        string str = "t" + std::to_string(*pInt);
+        if (a != -1) {
+            temp[a] = 0;
+        }
+        if (b != -1) {
+            temp[b] = 0;
+        }
+        code.emplace_back(str);
+        code.emplace_back("=");
+        code.emplace_back(i);
+        switch (binaryOp) {
+            case Add:
+                code.emplace_back("+");
+                break;
+            case Sub:
+                code.emplace_back("-");
+                break;
+            case Mul:
+                code.emplace_back("*");
+                break;
+            case Div:
+                code.emplace_back("/");
+                break;
+            case Mod:
+                code.emplace_back("%");
+                break;
+        }
+        code.emplace_back(j);
+        midCode.emplace_back(code);
+        return str;
     }
-    if (b != -1) {
-        temp[b] = 0;
-    }
-    code.emplace_back(str);
-    code.emplace_back("=");
-    code.emplace_back(i);
-    switch (binaryOp) {
-        case Add:
-            code.emplace_back("+");
-            break;
-        case Sub:
-            code.emplace_back("-");
-            break;
-        case Mul:
-            code.emplace_back("*");
-            break;
-        case Div:
-            code.emplace_back("/");
-            break;
-        case Mod:
-            code.emplace_back("%");
-            break;
-    }
-    code.emplace_back(j);
-    midCode.emplace_back(code);
-    return str;
-
 }
 
 int BinaryExpr::returnValue() const {
@@ -907,9 +966,9 @@ BlockStmt::~BlockStmt() {
     }
 }
 
-void BlockStmt::mid_code(bool isCommon) {
+void BlockStmt::mid_code(bool isFuncBlock) {
     symbolTable_Var->push();
-    if (isCommon) {
+    if (isFuncBlock) {
         vector<string> code;
         code.emplace_back("beginBlock");
         midCode.emplace_back(code);
@@ -1099,7 +1158,7 @@ stmt_class::~stmt_class() {
     printStmt = nullptr;
 }
 
-void stmt_class::mid_code(bool isCommon) const {
+void stmt_class::mid_code(bool isFuncBlock) const {
     switch (stmtType) {
         case LVALASSIGN:
         case LVALGETINT:
@@ -1116,7 +1175,7 @@ void stmt_class::mid_code(bool isCommon) const {
         case EMPTY:
             break;
         case BLOCK:
-            blockStmt->mid_code(isCommon);
+            blockStmt->mid_code(isFuncBlock);
             break;
         case IFSTMT:
             ifStmt->mid_code();

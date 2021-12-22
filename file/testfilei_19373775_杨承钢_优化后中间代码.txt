@@ -1,0 +1,73 @@
+string print_1_3 "\n"
+string print_1_2 ", "
+string print_1_1 ", "
+var int d = 4
+int hhh 1
+param int i
+t0 = i * i
+var int c = t0
+if if_begin_1:
+seq t0 i 1
+beqz t0 if_end_1
+ret 1
+end if_end_1:
+if if_begin_2:
+seq t0 i 2
+beqz t0 if_end_2
+ret 2
+end if_end_2:
+t0 = c * c
+t1 = t0 % 10
+c = t1
+t1 = i - 1
+push t1 int 0
+call hhh
+t1 = RET
+t2 = i - 2
+push t2 int 0
+call hhh
+t2 = RET
+t3 = t1 + t2
+ret t3
+endFunc
+int main 0
+var int i = 2
+var int j = 5
+i = getint
+j = getint
+push 3 number 0
+call hhh
+t3 = RET
+push t3 int 0
+call hhh
+t3 = RET
+t4 = 41440 - t3
+t5 = t4 + -10091
+j = t5
+t5 = - 5
+t6 = - t5
+var int k = t6
+var int n = 10
+while loop_begin_1:
+t6 = k * k
+t7 = t6 * k
+t0 = t7 * k
+t1 = t0 * k
+t2 = t1 * k
+slt t3 n t2
+beqz t3 loop_end_1
+t3 = d * d
+t4 = t3 % 10000
+d = t4
+t4 = n + 1
+n = t4
+goto loop_begin_1
+end loop_end_1:
+output i
+output string print_1_1
+output j
+output string print_1_2
+output k
+output string print_1_3
+ret 0
+endFunc

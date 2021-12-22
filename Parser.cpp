@@ -34,7 +34,7 @@ void output_Parser_wrong() {
     for(auto &it : vect) {
         errorfile << it.first << " " << it.second << endl;
     }
-    std::cerr << "InValid Syntax" << endl;
+    std::cout << "InValid Syntax" << endl;
 #endif
 }
 

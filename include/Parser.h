@@ -10,7 +10,7 @@
 #define COMPILER_PARSER_H
 
 //#define OUTPUT_Parser
-//#define OUTPUT_Parser_WRONG
+#define OUTPUT_Parser_WRONG
 
 void error_Parser();
 void error(int, char);

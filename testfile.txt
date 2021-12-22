@@ -1,7 +1,17 @@
+const int c[2][2] = {{1,2},{3,4}};
+void f2(int a[]) {
+ // printf
 
-int c[2][2] = {};
+}
+void f1(int a[][c[0][1]]) {
+ f2(a[0]);
+ // printf
+}
 
-int main () {
 
+
+int main(){
+    int b[1][1];
+    f1(b);
     return 0;
 }
